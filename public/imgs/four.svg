@@ -1,0 +1,8 @@
+<svg width="72px" height="72px" viewBox="0 0 72 72" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <g id="Symbols" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="four">
+            <rect id="Rectangle" x="0" y="0" width="72" height="72" rx="8"></rect>
+            <path d="M44.4335938,41.3203125 L44.4335938,19.875 L37.8242188,19.875 L23.4804688,42.515625 L23.7382812,46.59375 L37.9179688,46.59375 L37.9179688,54 L44.4335938,54 L44.4335938,46.59375 L48.3945312,46.59375 L48.3945312,41.3203125 L44.4335938,41.3203125 Z M29.8789062,41.3203125 L37.2851562,29.765625 L37.9179688,28.640625 L37.9179688,41.3203125 L29.8789062,41.3203125 Z" fill="#FFFFFF" fill-rule="nonzero"></path>
+        </g>
+    </g>
+</svg>
