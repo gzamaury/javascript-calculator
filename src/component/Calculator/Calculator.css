@@ -1,0 +1,56 @@
+:root {
+  --display-border: solid blue 2px;
+  --kb-border: solid red 2px;
+}
+
+.cal-container,
+.cal-container * {
+  box-sizing: border-box;
+}
+
+.cal-container {
+  width: 100vw;
+  height: 100vh;
+}
+
+#calculator {
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+}
+
+#display {
+  flex-grow: 1;
+  border: var(--display-border);
+}
+
+#kb-left,
+#kb-right {
+  border: var(--kb-border);
+  display: flex;
+}
+
+#kb-left {
+  order: -1;
+}
+
+@media only screen and (orientation: portrait) {
+  #calculator {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: auto min-content;
+  }
+
+  #display {
+    grid-column: 1 / 3;
+  }
+
+  #kb-left {
+    order: unset;
+    grid-column: 1 / 2;
+  }
+
+  #kb-right {
+    grid-column: 2 / 3;
+  }
+}
