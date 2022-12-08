@@ -1,2 +1,7 @@
+:root {
+  --display-border: unset !important;
+  --kb-border: unset !important;
+}
+
 .App {
 }
