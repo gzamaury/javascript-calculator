@@ -4,9 +4,9 @@ import "./Key.css";
 function Key({ keyId, icon, keyChar }) {
   return (
     <div className="key-container">
-      <div id={keyId} className="key">
+      <div id={keyId} className="key hidden-text">
+        {keyChar}
         <img src={icon} alt="icon" className="icon" />
-        <span className="hidden">{keyChar}</span>
       </div>
     </div>
   );

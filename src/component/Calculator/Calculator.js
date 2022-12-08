@@ -19,7 +19,7 @@ function Calculator() {
           <Key
             keyId="decimal"
             icon={icons.decimal}
-            keyChar=""
+            keyChar="."
             className="key"
           />
         </div>

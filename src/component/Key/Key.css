@@ -4,8 +4,9 @@
   --icon-height: var(--icon-width);
 }
 
-.hidden {
-  display: none;
+.hidden-text {
+  color: transparent;
+  font-size: 0;
 }
 
 .key-container {
