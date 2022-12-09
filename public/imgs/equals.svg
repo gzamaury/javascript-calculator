@@ -1,0 +1,8 @@
+<svg width="72px" height="72px" viewBox="0 0 72 72" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <g id="Symbols" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="equals">
+            <rect id="Rectangle" x="0" y="0" width="72" height="72" rx="8"></rect>
+            <path d="M48,32.9954965 L48,27.0436061 L24,27.0436061 L24,32.9954965 L48,32.9954965 Z M48,45 L48,38.9857891 L24,38.9857891 L24,45 L48,45 Z" fill="#FFFFFF" fill-rule="nonzero"></path>
+        </g>
+    </g>
+</svg>

@@ -1,0 +1,8 @@
+<svg width="72px" height="72px" viewBox="0 0 72 72" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <g id="Symbols" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="one">
+            <rect id="Rectangle" x="0" y="0" width="72" height="72" rx="8"></rect>
+            <polygon fill="#FFFFFF" fill-rule="nonzero" points="41.3632812 54 41.3632812 19.875 41.0117188 19.875 26.1523438 25.2421875 26.1523438 30.9140625 34.7773438 27.8203125 34.7773438 54"></polygon>
+        </g>
+    </g>
+</svg>
