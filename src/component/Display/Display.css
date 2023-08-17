@@ -1,0 +1,12 @@
+:root {
+  --display-color: rgba(217, 217, 217, 1);
+  --display-width: 268px;
+  --display-height: 268px;
+}
+
+.display-container {
+  background-color: var(--display-color);
+  width: var(--display-width);
+  height: var(--display-height);
+  border-radius: 8px;
+}

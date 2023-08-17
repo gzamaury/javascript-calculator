@@ -1,13 +1,16 @@
 /* eslint-disable no-unused-vars */
 import icons from "../Key/icons";
 import Key from "../Key/Key";
+import Display from "../Display/Display";
 import "./Calculator.css";
 
 function Calculator() {
   return (
     <div className="cal-container">
       <div id="calculator">
-        <div id="display">display</div>
+        <div id="display-section">
+          <Display displayId="display" />
+        </div>
         <div id="kb-left" className="kb-section">
           <Key keyId="seven" icon={icons.seven} keyChar="7" className="key" />
           <Key keyId="eight" icon={icons.eight} keyChar="8" className="key" />
