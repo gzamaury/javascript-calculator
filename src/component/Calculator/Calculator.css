@@ -32,6 +32,11 @@
   border: var(--display-border);
 }
 
+.display-container {
+  width: 100%;
+  height: 100%;
+}
+
 #kb-left,
 #kb-right {
   border: var(--kb-border);
