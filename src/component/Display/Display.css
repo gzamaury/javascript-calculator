@@ -2,6 +2,11 @@
   --display-color: rgba(217, 217, 217, 1);
   --display-width: 268px;
   --display-height: 268px;
+  --display-font-family: "Roboto Mono", monospace;
+
+  --bg-bar-btn: rgba(87, 89, 91, 0.3);
+  --bar-btn-color: 52, 49, 50;
+  --bar-btn-gap: 1%;
 }
 
 .display-container {
@@ -9,4 +14,46 @@
   width: var(--display-width);
   height: var(--display-height);
   border-radius: 8px;
+}
+
+.display {
+  width: 100%;
+  height: 100%;
+  font-family: var(--display-font-family);
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: 1fr minmax(min-content, max-content);
+}
+
+.dsp-main {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.dsp-bar-btn {
+  padding: var(--bar-btn-gap);
+  display: flex;
+  flex-direction: row-reverse;
+  justify-content: space-between;
+  align-items: center;
+  gap: var(--bar-btn-gap);
+}
+
+.bar-btn-item {
+  background-color: var(--bg-bar-btn);
+  border-radius: 8px;
+  font-family: "Roboto Mono", monospace;
+  text-align: center;
+  font-weight: 700;
+  font-size: xx-small;
+  flex: 0 1 calc(20% - var(--bar-btn-gap));
+}
+
+.bar-btn-enabled {
+  color: rgba(var(--bar-btn-color), 1);
+}
+
+.bar-btn-disabled {
+  color: rgba(var(--bar-btn-color), 0.3);
 }
