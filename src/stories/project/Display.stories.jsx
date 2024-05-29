@@ -1,5 +1,3 @@
-/* eslint-disable storybook/use-storybook-expect */
-/* expect now is imported form @storybook/test, not @storybook/jest */
 import { within, userEvent, expect } from "@storybook/test";
 import Display from "../../component/Display/Display";
 

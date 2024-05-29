@@ -1,5 +1,4 @@
-import { within, userEvent } from "@storybook/test";
-import { expect } from "@storybook/jest";
+import { within, userEvent, expect } from "@storybook/test";
 import Key from "../../component/Key/Key";
 import icons from "../../component/Key/icons";
 
