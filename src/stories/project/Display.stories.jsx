@@ -44,7 +44,6 @@ export const History = {
     await userEvent.click(historyButton);
 
     const display = canvas.getByTestId("display");
-
     await expect(display).toHaveTextContent(historyText);
   },
 };

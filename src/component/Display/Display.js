@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import { buildOperation, buildHistory } from "./operationBuilder";
 import "./Display.css";
 
-function Display({ displayId, history, currentInput }) {
+function Display({ displayId, history = [[]], currentInput = ["0"] }) {
   const [showHistory, setShowHistory] = useState(false);
   const isHistoryEmpty = history.length === 0 || history[0].length < 1;
   const historyBtnClass = isHistoryEmpty
@@ -52,12 +52,8 @@ function Display({ displayId, history, currentInput }) {
 
 Display.propTypes = {
   displayId: PropTypes.string.isRequired,
-  history: PropTypes.arrayOf(PropTypes.arrayOf(PropTypes.string)),
-  currentInput: PropTypes.arrayOf(PropTypes.string),
-};
-Display.defaultProps = {
-  history: [[]],
-  currentInput: ["0"],
+  history: PropTypes.arrayOf(PropTypes.arrayOf(PropTypes.string)).isRequired,
+  currentInput: PropTypes.arrayOf(PropTypes.string).isRequired,
 };
 
 export default Display;
