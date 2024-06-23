@@ -1,12 +1,12 @@
 import PropTypes from "prop-types";
 import "./Key.css";
 
-function Key({ keyId, icon, keyChar, onKeyUp }) {
+function Key({ keyId, icon, keyChar, onClick }) {
   return (
     <div className="key-container">
       <button
         id={keyId}
-        onKeyUp={onKeyUp}
+        onClick={() => onClick(keyChar)}
         className="key hidden-text"
         type="button"
       >
@@ -21,7 +21,7 @@ Key.propTypes = {
   keyId: PropTypes.string.isRequired,
   icon: PropTypes.string.isRequired,
   keyChar: PropTypes.string.isRequired,
-  onKeyUp: PropTypes.func.isRequired,
+  onClick: PropTypes.func.isRequired,
 };
 
 export default Key;
