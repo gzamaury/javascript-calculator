@@ -1,5 +1,5 @@
-import { within, userEvent } from "@storybook/test";
-import { expect } from "@storybook/jest";
+import { within, userEvent, expect } from "@storybook/test";
+import { action } from "@storybook/addon-actions";
 import Key from "../../component/Key/Key";
 import icons from "../../component/Key/icons";
 
@@ -32,6 +32,7 @@ Default.args = {
   keyId: "zero",
   icon: icons.zero,
   keyChar: "0",
+  onClick: action("onClick"),
 };
 
 export const NumberKey = Template.bind({});
@@ -39,6 +40,7 @@ NumberKey.args = {
   keyId: "seven",
   icon: icons.seven,
   keyChar: "7",
+  onClick: action("onClick"),
 };
 
 export const SymbolKey = Template.bind({});
@@ -46,6 +48,7 @@ SymbolKey.args = {
   keyId: "add",
   icon: icons.add,
   keyChar: "+",
+  onClick: action("onClick"),
 };
 
 // 'play' functions to simulate a click
