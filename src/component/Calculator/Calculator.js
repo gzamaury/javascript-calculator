@@ -8,9 +8,15 @@ import "./Calculator.css";
 
 function Calculator() {
   const [currentInput, setCurrentInput] = useState(["0"]);
+  const [prevResult, setPrevResult] = useState(null);
 
   const handleKeyPress = (keyChar) => {
-    setCurrentInput((prevOperation) => handleInput(prevOperation, keyChar));
+    setCurrentInput((prevInput) => handleInput(prevInput, keyChar));
+  };
+
+  const handleClearDisplay = () => {
+    setCurrentInput(["0"]);
+    setPrevResult(null);
   };
 
   function handleInput(prevInput, keyChar) {
@@ -28,27 +34,45 @@ function Calculator() {
         return caseIsAnOperator(prevInput, keyChar);
 
       case isEqOperator(keyChar):
-        return [...prevInput, calculateOperation(prevInput, keyChar)];
+        return caseIsEqOperator(prevInput, keyChar);
 
       default:
         return [...prevInput, keyChar];
     }
   }
 
-  function calculateOperation(operation, keyChar) {
-    // TODO
-    return `${keyChar}result`;
+  function caseIsEqOperator(prevInput, keyChar) {
+    return [...prevInput, calculateOperation(prevInput, keyChar)];
+  }
+
+  function calculateOperation(prevInput, keyChar) {
+    // 3 + 5 * 6 - 2 / 4 = 32.5 or 11.5
+
+    // eslint-disable-next-line no-eval
+    const result = eval(prevInput.join(""));
+
+    // We use prevResult to reuse result in the next operation
+    setPrevResult(String(result));
+
+    return `${keyChar}${result}`;
   }
 
   function caseIsAnOperator(prevInput, keyChar) {
-    const inputArray = removeTrailingZerosFromLastElem(prevInput);
+    let prevInputCopy = prevInput.slice();
+
+    if (prevResult !== null) {
+      prevInputCopy = [prevResult];
+      setPrevResult(null);
+    }
+
+    const inputArray = removeTrailingZerosFromLastElem(prevInputCopy);
     const lastElem = inputArray[inputArray.length - 1];
 
     if (inputArray.length < 1) {
-      return [...prevInput];
+      return [...prevInputCopy];
     }
 
-    // TODO: VERIFICAR QUE SE PERMITA NUMEROS NEGATIVOS (-)
+    // TODO: We need verify the negative nums case (-)
     if (isAnOperator(lastElem)) {
       return [...inputArray.slice(0, -1), keyChar];
     }
@@ -106,7 +130,7 @@ function Calculator() {
             displayId="display"
             history={[[]]}
             currentInput={currentInput}
-            clearDisplay={() => setCurrentInput(["0"])}
+            clearDisplay={handleClearDisplay}
           />
         </div>
         <div id="kb-left" className="kb-section">
