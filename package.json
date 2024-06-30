@@ -19,7 +19,7 @@
   "scripts": {
     "predeploy": "npm run build",
     "deploy": "gh-pages -d build",
-    "start": "react-scripts start",
+    "start": "PUBLIC_URL=/ react-scripts start",
     "build": "react-scripts build",
     "build-locally": "PUBLIC_URL=/ react-scripts build",
     "deploy-locally": "npm run build-locally && http-server build",
