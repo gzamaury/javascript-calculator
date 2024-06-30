@@ -67,13 +67,33 @@ function Calculator() {
 
     const inputArray = removeTrailingZerosFromLastElem(prevInputCopy);
     const lastElem = inputArray[inputArray.length - 1];
+    const beforeLastElem =
+      inputArray.length > 1 ? inputArray[inputArray.length - 2] : "";
 
     if (inputArray.length < 1) {
       return [...prevInputCopy];
     }
 
-    // TODO: We need verify the negative nums case (-)
-    if (isAnOperator(lastElem)) {
+    // elem before last is * or /
+    // and last element is - operator
+    // and char is not - operator
+    if (
+      isMultiOrDivOperator(beforeLastElem) &&
+      isSubtractOperator(lastElem) &&
+      !isSubtractOperator(keyChar)
+    ) {
+      // replace *- or /- with any +*/ operator
+      return [...inputArray.slice(0, -2), keyChar];
+    }
+
+    // last element is +-*/ operator and char is not - operator
+    if (
+      (isAnOperator(lastElem) && !isSubtractOperator(keyChar)) ||
+      ((isAddOperator(lastElem) || isSubtractOperator(lastElem)) &&
+        isSubtractOperator(keyChar))
+    ) {
+      // replace +-*/ with any +*/ operator
+      // or replace +- with any - operator
       return [...inputArray.slice(0, -1), keyChar];
     }
 
@@ -89,6 +109,15 @@ function Calculator() {
     return [...inputArray.slice(0, -1), newElement];
   }
 
+  function isSubtractOperator(e) {
+    return /^[-]$/.test(e);
+  }
+  function isAddOperator(e) {
+    return /^[+]$/.test(e);
+  }
+  function isMultiOrDivOperator(e) {
+    return /^[*/]$/.test(e);
+  }
   function isANumberOrPoint(e) {
     return /^[\d.]$/.test(e);
   }
