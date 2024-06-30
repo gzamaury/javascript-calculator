@@ -1,10 +1,21 @@
-/* eslint-disable no-console */
-/* eslint-disable no-unused-vars */
 import { useState } from "react";
 import icons from "../Key/icons";
 import Key from "../Key/Key";
 import Display from "../Display/Display";
 import "./Calculator.css";
+import {
+  isEqOperator,
+  isAnOperator,
+  isANumberOrPoint,
+  isMultiOrDivOperator,
+  isAddOperator,
+  isSubtractOperator,
+} from "./utils/validators";
+import {
+  concatCharToLastElem,
+  removeTrailingZerosFromLastElem,
+  calculateOperation,
+} from "./utils/helpers";
 
 function Calculator() {
   const [currentInput, setCurrentInput] = useState(["0"]);
@@ -22,56 +33,44 @@ function Calculator() {
   function handleInput(prevInput, keyChar) {
     const lastElem = prevInput[prevInput.length - 1];
 
-    switch (true) {
-      case isANumberOrPoint(keyChar):
-        if (isAnOperator(lastElem)) {
-          return [...prevInput, keyChar];
-        }
-
-        return concatCharToLastElem(prevInput, keyChar);
-
-      case isAnOperator(keyChar):
-        return caseIsAnOperator(prevInput, keyChar);
-
-      case isEqOperator(keyChar):
-        return caseIsEqOperator(prevInput, keyChar);
-
-      default:
-        return [...prevInput, keyChar];
+    if (isANumberOrPoint(keyChar)) {
+      return handleNumberOrPoint(prevInput, lastElem, keyChar);
     }
+
+    if (isAnOperator(keyChar)) {
+      return handleOperator(prevInput, keyChar);
+    }
+
+    if (isEqOperator(keyChar)) {
+      return handleEqualOperator(prevInput, keyChar);
+    }
+
+    return [...prevInput, keyChar];
   }
 
-  function caseIsEqOperator(prevInput, keyChar) {
-    return [...prevInput, calculateOperation(prevInput, keyChar)];
+  function handleNumberOrPoint(prevInput, lastElem, keyChar) {
+    if (isAnOperator(lastElem)) {
+      return [...prevInput, keyChar];
+    }
+
+    return concatCharToLastElem(prevInput, keyChar);
   }
 
-  function calculateOperation(prevInput, keyChar) {
-    // 3 + 5 * 6 - 2 / 4 = 32.5 or 11.5
-
-    // eslint-disable-next-line no-eval
-    const result = eval(prevInput.join(""));
-
-    // We use prevResult to reuse result in the next operation
-    setPrevResult(String(result));
-
-    return `${keyChar}${result}`;
-  }
-
-  function caseIsAnOperator(prevInput, keyChar) {
-    let prevInputCopy = prevInput.slice();
+  function handleOperator(prevInput, keyChar) {
+    let inputArray = prevInput.slice();
 
     if (prevResult !== null) {
-      prevInputCopy = [prevResult];
+      inputArray = [prevResult];
       setPrevResult(null);
     }
 
-    const inputArray = removeTrailingZerosFromLastElem(prevInputCopy);
+    inputArray = removeTrailingZerosFromLastElem(inputArray);
     const lastElem = inputArray[inputArray.length - 1];
     const beforeLastElem =
       inputArray.length > 1 ? inputArray[inputArray.length - 2] : "";
 
     if (inputArray.length < 1) {
-      return [...prevInputCopy];
+      return [...inputArray];
     }
 
     // elem before last is * or /
@@ -100,55 +99,11 @@ function Calculator() {
     return [...inputArray, keyChar];
   }
 
-  function concatCharToLastElem(inputArray, char) {
-    const lastElem = inputArray[inputArray.length - 1];
-    let newElement = removeLeadingZeros(lastElem + char);
+  function handleEqualOperator(prevInput, keyChar) {
+    const result = calculateOperation(prevInput.join(""));
+    setPrevResult(String(result));
 
-    newElement = removeTrailingPoints(newElement);
-
-    return [...inputArray.slice(0, -1), newElement];
-  }
-
-  function isSubtractOperator(e) {
-    return /^[-]$/.test(e);
-  }
-  function isAddOperator(e) {
-    return /^[+]$/.test(e);
-  }
-  function isMultiOrDivOperator(e) {
-    return /^[*/]$/.test(e);
-  }
-  function isANumberOrPoint(e) {
-    return /^[\d.]$/.test(e);
-  }
-  function isAnOperator(element) {
-    return /^[+\-*//]$/.test(element);
-  }
-  function isEqOperator(element) {
-    return /=/.test(element);
-  }
-  function removeLeadingZeros(str) {
-    const oneZeroStr = str.replace(/^0+/, "0");
-
-    if (oneZeroStr.length <= 1) {
-      return oneZeroStr;
-    }
-
-    return oneZeroStr.replace(/^0+/, "");
-  }
-  function removeTrailingZeros(str) {
-    return str.replace(/(\.\d*?)0+$/, "$1").replace(/\.$/, "");
-  }
-  function removeTrailingZerosFromLastElem(inputArray) {
-    const lastElem = inputArray[inputArray.length - 1];
-    if (removeTrailingZeros(lastElem) === "") {
-      return [...inputArray.slice(0, -1)];
-    }
-
-    return [...inputArray.slice(0, -1), removeTrailingZeros(lastElem)];
-  }
-  function removeTrailingPoints(str) {
-    return str.replace(/(\.\d*?)(\.)/, "$1");
+    return [...prevInput, `${keyChar}${result}`];
   }
 
   return (
