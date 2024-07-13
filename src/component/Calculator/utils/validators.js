@@ -16,8 +16,16 @@ function isAnOperator(element) {
 function isEqOperator(element) {
   return /=/.test(element);
 }
+function isZero(element) {
+  return /^[0]$/.test(element);
+}
+function isPoint(element) {
+  return /^[.]$/.test(element);
+}
 
 export {
+  isPoint,
+  isZero,
   isEqOperator,
   isAnOperator,
   isANumberOrPoint,

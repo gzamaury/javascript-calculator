@@ -4,6 +4,8 @@ import Key from "../Key/Key";
 import Display from "../Display/Display";
 import "./Calculator.css";
 import {
+  isPoint,
+  isZero,
   isEqOperator,
   isAnOperator,
   isANumberOrPoint,
@@ -12,6 +14,8 @@ import {
   isSubtractOperator,
 } from "./utils/validators";
 import {
+  removeLeadingZeros,
+  removeTrailingZeros,
   concatCharToLastElem,
   removeTrailingZerosFromLastElem,
   calculateOperation,
@@ -31,10 +35,8 @@ function Calculator() {
   };
 
   function handleInput(prevInput, keyChar) {
-    const lastElem = prevInput[prevInput.length - 1];
-
     if (isANumberOrPoint(keyChar)) {
-      return handleNumberOrPoint(prevInput, lastElem, keyChar);
+      return handleNumberOrPoint(prevInput, keyChar);
     }
 
     if (isAnOperator(keyChar)) {
@@ -48,12 +50,40 @@ function Calculator() {
     return [...prevInput, keyChar];
   }
 
-  function handleNumberOrPoint(prevInput, lastElem, keyChar) {
-    if (isAnOperator(lastElem)) {
-      return [...prevInput, keyChar];
+  function handleNumberOrPoint(prevInput, keyChar) {
+    let inputArray = prevInput.slice();
+
+    // when there is a previus result
+    if (prevResult !== null) {
+      inputArray = ["0"];
+      setPrevResult(null);
     }
 
-    return concatCharToLastElem(prevInput, keyChar);
+    const lastElem = inputArray[inputArray.length - 1];
+
+    // The initial - can be replace only by 0
+    if (
+      isZero(keyChar) &&
+      inputArray.length === 1 &&
+      isSubtractOperator(lastElem)
+    ) {
+      return [keyChar];
+    }
+
+    // after the initial - can be concatenated a .
+    if (
+      isPoint(keyChar) &&
+      inputArray.length === 1 &&
+      isSubtractOperator(lastElem)
+    ) {
+      return [lastElem, keyChar];
+    }
+
+    if (isAnOperator(lastElem)) {
+      return [...inputArray, keyChar];
+    }
+
+    return concatCharToLastElem(inputArray, keyChar);
   }
 
   function handleOperator(prevInput, keyChar) {
@@ -64,13 +94,41 @@ function Calculator() {
       setPrevResult(null);
     }
 
-    inputArray = removeTrailingZerosFromLastElem(inputArray);
-    const lastElem = inputArray[inputArray.length - 1];
-    const beforeLastElem =
+    let lastElem = inputArray[inputArray.length - 1];
+    let beforeLastElem =
       inputArray.length > 1 ? inputArray[inputArray.length - 2] : "";
 
-    if (inputArray.length < 1) {
+    // the initial - or . can't be replaced by * / or +
+    if (
+      (isMultiOrDivOperator(keyChar) || isAddOperator(keyChar)) &&
+      inputArray.length === 1 &&
+      (isSubtractOperator(lastElem) || removeTrailingZeros(lastElem) === "")
+    ) {
+      return [lastElem];
+    }
+
+    // the initial -. or -.0+ can't be replaced by * / or +
+    if (
+      (isMultiOrDivOperator(keyChar) || isAddOperator(keyChar)) &&
+      inputArray.length === 2 &&
+      removeTrailingZeros(lastElem) === "" &&
+      isSubtractOperator(beforeLastElem)
+    ) {
       return [...inputArray];
+    }
+
+    inputArray = removeTrailingZerosFromLastElem(inputArray);
+    lastElem = inputArray[inputArray.length - 1];
+    beforeLastElem =
+      inputArray.length > 1 ? inputArray[inputArray.length - 2] : "";
+
+    // the initial zero can be replaced for a subtract operator
+    if (
+      isZero(lastElem) &&
+      inputArray.length === 1 &&
+      isSubtractOperator(keyChar)
+    ) {
+      return [keyChar];
     }
 
     // elem before last is * or /
@@ -81,29 +139,42 @@ function Calculator() {
       isSubtractOperator(lastElem) &&
       !isSubtractOperator(keyChar)
     ) {
-      // replace *- or /- with any +*/ operator
+      // replace *- or /- with any + * / operator
       return [...inputArray.slice(0, -2), keyChar];
     }
 
-    // last element is +-*/ operator and char is not - operator
+    // the last element is + - * / operator and char is not - operator
     if (
       (isAnOperator(lastElem) && !isSubtractOperator(keyChar)) ||
       ((isAddOperator(lastElem) || isSubtractOperator(lastElem)) &&
         isSubtractOperator(keyChar))
     ) {
-      // replace +-*/ with any +*/ operator
-      // or replace +- with any - operator
+      // replace + - * / with any + * / operator
+      // or replace + - with - operator
       return [...inputArray.slice(0, -1), keyChar];
     }
 
     return [...inputArray, keyChar];
   }
 
-  function handleEqualOperator(prevInput, keyChar) {
-    const result = calculateOperation(prevInput.join(""));
-    setPrevResult(String(result));
+  function handleEqualOperator(inputArray, keyChar) {
+    const lastElem = inputArray[inputArray.length - 1];
 
-    return [...prevInput, `${keyChar}${result}`];
+    // control when an operation is not valid
+    if (
+      inputArray.length <= 2 ||
+      isAnOperator(lastElem) ||
+      removeTrailingZeros(lastElem) === ""
+    ) {
+      return [...inputArray];
+    }
+
+    const result = removeLeadingZeros(
+      String(calculateOperation(inputArray.join("")))
+    );
+    setPrevResult(result);
+
+    return [...inputArray, `${keyChar}${result}`];
   }
 
   return (
