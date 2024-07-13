@@ -8,17 +8,30 @@ function concatCharToLastElem(inputArray, char) {
 }
 
 function removeLeadingZeros(str) {
-  const oneZeroStr = str.replace(/^0+/, "0");
-
-  if (oneZeroStr.length <= 1) {
-    return oneZeroStr;
-  }
-
-  return oneZeroStr.replace(/^0+/, "");
+  return str
+    .replace(/^(-?)0+(?=\d)/, "$1") // remove leading zeros from positive or negative numbers
+    .replace(/^(-?)0*\./, "$1."); // remove leading zero before a decimal point
+  // Remove Leading Zeros for Numbers:
+  //  - /^(-?)0+(?=\d)/: This regex matches zero or one - sign and captures it in a group(-?),
+  //    followed by one or more zeros(0+) at the start of the string(^), but only if they are
+  //    followed by a digit((?=\d)).
+  //  - The replace function replaces the leading zeros with an empty string, but will keep the
+  //    - if it exists.
+  // Remove Leading Zeros Before a Decimal Point:
+  // -  /^(-?)0*\./: This regex matches an optional negative sign(-?), followed by zero
+  //    or more zeros(0*), and then a decimal point(\.) at the start of the string(^).
+  // -  The replace function removes the leading zeros and keeps the negative sign and the
+  //    decimal point($1.).
 }
 
 function removeTrailingPoints(str) {
-  return str.replace(/(\.\d*?)(\.)/, "$1");
+  return str.replace(/(\.\d*)(\.)/, "$1");
+  // - (\.\d*): This is the first capturing group.
+  //    - \.: Matches a literal decimal point.
+  //    - \d*: Matches zero or more digits.
+  // - (\.): This is the second capturing group.
+  //    - \.: Matches another literal decimal point.
+  // - "$1": The entire match will be replaced by the contents of the first capturing group.
 }
 
 function removeTrailingZerosFromLastElem(inputArray) {
@@ -40,6 +53,8 @@ function calculateOperation(expression) {
 }
 
 export {
+  removeLeadingZeros,
+  removeTrailingZeros,
   concatCharToLastElem,
   removeTrailingZerosFromLastElem,
   calculateOperation,
