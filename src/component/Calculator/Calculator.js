@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import icons from "../Key/icons";
 import Key from "../Key/Key";
 import Display from "../Display/Display";
@@ -24,10 +24,27 @@ import {
 function Calculator() {
   const [currentInput, setCurrentInput] = useState(["0"]);
   const [prevResult, setPrevResult] = useState(null);
+  const [history, setHistory] = useState([]);
 
   const handleKeyPress = (keyChar) => {
     setCurrentInput((prevInput) => handleInput(prevInput, keyChar));
   };
+
+  useEffect(() => {
+    if (prevResult !== null) {
+      setHistory((prevHistory) => {
+        const lastHistoryEntry = prevHistory[prevHistory.length - 1];
+
+        if (
+          !lastHistoryEntry ||
+          lastHistoryEntry.join("") !== currentInput.join("")
+        ) {
+          return [...prevHistory, currentInput];
+        }
+        return [...prevHistory];
+      });
+    }
+  }, [prevResult, currentInput]);
 
   const handleClearDisplay = () => {
     setCurrentInput(["0"]);
@@ -164,7 +181,8 @@ function Calculator() {
     if (
       inputArray.length <= 2 ||
       isAnOperator(lastElem) ||
-      removeTrailingZeros(lastElem) === ""
+      removeTrailingZeros(lastElem) === "" ||
+      prevResult !== null
     ) {
       return [...inputArray];
     }
@@ -183,7 +201,7 @@ function Calculator() {
         <div id="display-section">
           <Display
             displayId="display"
-            history={[[]]}
+            history={history}
             currentInput={currentInput}
             clearDisplay={handleClearDisplay}
           />
