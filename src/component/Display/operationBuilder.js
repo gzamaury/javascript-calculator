@@ -1,4 +1,7 @@
+/* eslint-disable no-console */
 export function buildHistory(history) {
+  console.log("history:");
+  console.log(history);
   const displayOutput = [];
   const copyHistory = history.slice().reverse();
 
@@ -37,7 +40,7 @@ export function buildHistory(history) {
 }
 
 export function buildOperation(input) {
-  let operation = [];
+  const operation = [];
   const jsxOpElements = input.map((element) => {
     switch (true) {
       case isAnOperand(element):
@@ -61,8 +64,8 @@ export function buildOperation(input) {
   if (starWithEq(lastElement)) {
     const result = lastElement.slice(1);
 
-    // Not showing operation, just for passing test No. 9
-    operation = [];
+    // Not showing operation, uncomment next line just for passing tests
+    // operation = [];
     operation.push(<div className="result">{result}</div>);
   }
 
