@@ -184,7 +184,8 @@ function Calculator() {
     return [...inputArray, keyChar];
   }
 
-  function handleEqualOperator(inputArray, keyChar) {
+  function handleEqualOperator(prevInput, keyChar) {
+    let inputArray = prevInput.slice();
     const lastElem = inputArray[inputArray.length - 1];
 
     // control when an operation is not valid
@@ -197,6 +198,7 @@ function Calculator() {
       return [...inputArray];
     }
 
+    inputArray = removeTrailingZerosFromLastElem(inputArray);
     const result = removeLeadingZeros(
       String(calculateOperation(inputArray.join("")))
     );
