@@ -1,4 +1,3 @@
-import { useState } from "react";
 import PropTypes from "prop-types";
 import { buildOperation, buildHistory } from "./operationBuilder";
 import "./Display.css";
@@ -8,8 +7,9 @@ function Display({
   history = [[]],
   currentInput = ["0"],
   clearDisplay,
+  showHistory,
+  toggleHistory,
 }) {
-  const [showHistory, setShowHistory] = useState(false);
   const isHistoryEmpty = history.length === 0 || history[0].length < 1;
   const historyBtnClass = isHistoryEmpty
     ? " bar-btn-disabled"
@@ -21,10 +21,6 @@ function Display({
   const displayOutput = showHistory
     ? buildHistory(history)
     : buildOperation(currentInput);
-
-  const handleClickHistory = () => {
-    setShowHistory(!showHistory);
-  };
 
   return (
     <div className="display-container" data-testid="display">
@@ -42,14 +38,14 @@ function Display({
             disabled={isDisplayEmpty}
             onClick={clearDisplay}
           >
-            CLR
+            {!showHistory ? "CLR" : "CLR HISTORY"}
           </button>
           <button
             id="history"
             name="history"
             className={`bar-btn-item${historyBtnClass}`}
-            onClick={handleClickHistory}
-            onKeyUp={handleClickHistory}
+            onClick={toggleHistory}
+            onKeyUp={toggleHistory}
             type="button"
             disabled={isHistoryEmpty}
           >
@@ -66,6 +62,8 @@ Display.propTypes = {
   history: PropTypes.arrayOf(PropTypes.arrayOf(PropTypes.string)).isRequired,
   currentInput: PropTypes.arrayOf(PropTypes.string).isRequired,
   clearDisplay: PropTypes.func.isRequired,
+  showHistory: PropTypes.bool.isRequired,
+  toggleHistory: PropTypes.func.isRequired,
 };
 
 export default Display;
