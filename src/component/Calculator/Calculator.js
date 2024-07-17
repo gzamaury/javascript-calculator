@@ -25,6 +25,7 @@ function Calculator() {
   const [currentInput, setCurrentInput] = useState(["0"]);
   const [prevResult, setPrevResult] = useState(null);
   const [history, setHistory] = useState([]);
+  const [showHistory, setShowHistory] = useState(false);
 
   const handleKeyPress = (keyChar) => {
     setCurrentInput((prevInput) => handleInput(prevInput, keyChar));
@@ -47,8 +48,17 @@ function Calculator() {
   }, [prevResult, currentInput]);
 
   const handleClearDisplay = () => {
-    setCurrentInput(["0"]);
-    setPrevResult(null);
+    if (showHistory) {
+      setHistory([]);
+      setShowHistory(false);
+    } else {
+      setCurrentInput(["0"]);
+      setPrevResult(null);
+    }
+  };
+
+  const handleToggleHistory = () => {
+    setShowHistory((prevShowHistory) => !prevShowHistory);
   };
 
   function handleInput(prevInput, keyChar) {
@@ -204,6 +214,8 @@ function Calculator() {
             history={history}
             currentInput={currentInput}
             clearDisplay={handleClearDisplay}
+            showHistory={showHistory}
+            toggleHistory={handleToggleHistory}
           />
         </div>
         <div id="kb-left" className="kb-section">
