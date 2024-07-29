@@ -15,12 +15,22 @@ function Display({
     ? " bar-btn-disabled"
     : " bar-btn-enabled";
   const isDisplayEmpty = currentInput.toString() === ["0"].toString();
-  const clearBtnClass = isDisplayEmpty
-    ? " bar-btn-disabled"
-    : " bar-btn-enabled";
+  const clearBtnClassDisabled =
+    (!showHistory && isDisplayEmpty) || (showHistory && isHistoryEmpty)
+      ? " bar-btn-disabled"
+      : " bar-btn-enabled";
   const displayOutput = showHistory
     ? buildHistory(history)
     : buildOperation(currentInput);
+
+  let clearBtnText = "CLR";
+  let historyBtnText = "HISTORY";
+  let clerBtnDisabled = isDisplayEmpty;
+  if (showHistory) {
+    clearBtnText = "CLR HISTORY";
+    historyBtnText = "CLOSE HISTORY";
+    clerBtnDisabled = isHistoryEmpty;
+  }
 
   return (
     <div className="display-container" data-testid="display">
@@ -33,12 +43,12 @@ function Display({
         <div id="dsp-bar-btn" className="dsp-bar-btn">
           <button
             id="clear"
-            className={`bar-btn-item${clearBtnClass}`}
+            className={`bar-btn-item${clearBtnClassDisabled}`}
             type="button"
-            disabled={isDisplayEmpty}
+            disabled={clerBtnDisabled}
             onClick={clearDisplay}
           >
-            {!showHistory ? "CLR" : "CLR HISTORY"}
+            {clearBtnText}
           </button>
           <button
             id="history"
@@ -49,7 +59,7 @@ function Display({
             type="button"
             disabled={isHistoryEmpty}
           >
-            {!showHistory ? "HISTORY" : "CLOSE HISTORY"}
+            {historyBtnText}
           </button>
         </div>
       </div>
