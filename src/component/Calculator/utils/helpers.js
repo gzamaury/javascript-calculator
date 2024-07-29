@@ -49,7 +49,14 @@ function removeTrailingZeros(str) {
 
 function calculateOperation(expression) {
   // eslint-disable-next-line no-eval
-  return eval(expression);
+  const result = eval(expression);
+
+  if (typeof result === "number") {
+    // Round to 4 decimal places if the result is a number
+    return Number(result.toFixed(4));
+  }
+  // Return the original result if it's not a number
+  return result;
 }
 
 export {

@@ -54,6 +54,7 @@ function Calculator() {
     } else {
       setCurrentInput(["0"]);
       setPrevResult(null);
+      setHistory(history);
     }
   };
 
@@ -186,7 +187,37 @@ function Calculator() {
 
   function handleEqualOperator(prevInput, keyChar) {
     let inputArray = prevInput.slice();
-    const lastElem = inputArray[inputArray.length - 1];
+    let lastElem = inputArray[inputArray.length - 1];
+    let beforeLastElem =
+      inputArray.length > 1 ? inputArray[inputArray.length - 2] : "";
+
+    // removes last and before last elems if last is .0 and before last is an operator
+    if (
+      removeTrailingZeros(lastElem) === "" &&
+      isAnOperator(beforeLastElem) &&
+      inputArray.length > 4
+    ) {
+      inputArray = inputArray.slice(0, -2);
+      lastElem = inputArray[inputArray.length - 1];
+      beforeLastElem =
+        inputArray.length > 1 ? inputArray[inputArray.length - 2] : "";
+    }
+
+    // removes last elem if is an operator
+    if (
+      isAnOperator(lastElem) &&
+      isAnOperator(beforeLastElem) &&
+      inputArray.length > 3
+    ) {
+      inputArray = inputArray.slice(0, -2);
+      lastElem = inputArray[inputArray.length - 1];
+    }
+
+    // removes last and before last elems if both are operators
+    if (isAnOperator(lastElem) && inputArray.length > 3) {
+      inputArray = inputArray.slice(0, -1);
+      lastElem = inputArray[inputArray.length - 1];
+    }
 
     // control when an operation is not valid
     if (
@@ -199,6 +230,7 @@ function Calculator() {
     }
 
     inputArray = removeTrailingZerosFromLastElem(inputArray);
+
     const result = removeLeadingZeros(
       String(calculateOperation(inputArray.join("")))
     );
