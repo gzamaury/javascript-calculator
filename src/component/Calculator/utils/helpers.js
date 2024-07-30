@@ -59,10 +59,20 @@ function calculateOperation(expression) {
   return result;
 }
 
+function triggerVibration() {
+  if (navigator.vibrate) {
+    navigator.vibrate(100);
+  } else {
+    // eslint-disable-next-line no-console
+    console.log("Vibration API not supported on this device.");
+  }
+}
+
 export {
   removeLeadingZeros,
   removeTrailingZeros,
   concatCharToLastElem,
   removeTrailingZerosFromLastElem,
   calculateOperation,
+  triggerVibration,
 };

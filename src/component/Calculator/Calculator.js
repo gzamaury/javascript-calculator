@@ -19,6 +19,7 @@ import {
   concatCharToLastElem,
   removeTrailingZerosFromLastElem,
   calculateOperation,
+  triggerVibration,
 } from "./utils/helpers";
 
 function Calculator() {
@@ -28,6 +29,7 @@ function Calculator() {
   const [showHistory, setShowHistory] = useState(false);
 
   const handleKeyPress = (keyChar) => {
+    triggerVibration();
     setCurrentInput((prevInput) => handleInput(prevInput, keyChar));
   };
 
@@ -48,6 +50,7 @@ function Calculator() {
   }, [prevResult, currentInput]);
 
   const handleClearDisplay = () => {
+    triggerVibration();
     if (showHistory) {
       setHistory([]);
       setShowHistory(false);
@@ -59,6 +62,7 @@ function Calculator() {
   };
 
   const handleToggleHistory = () => {
+    triggerVibration();
     setShowHistory((prevShowHistory) => !prevShowHistory);
   };
 
@@ -240,6 +244,7 @@ function Calculator() {
   }
 
   const handleBackspace = () => {
+    triggerVibration();
     setCurrentInput((prevInput) => {
       const lastElem = prevInput[prevInput.length - 1];
 
