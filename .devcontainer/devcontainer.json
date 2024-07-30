@@ -58,6 +58,7 @@
   // https://code.visualstudio.com/docs/remote/containers#_publishing-a-port
   // Unlike forwardPorts, these listen on all interfaces (0.0.0.0) not just localhost for it to be available externally
   // "appPort": ["3000:3000"],
+  "appPort": ["3000:3000"],
 
   // Use 'postCreateCommand' to run commands after the container is created.
   // "postCreateCommand": "npm i",
