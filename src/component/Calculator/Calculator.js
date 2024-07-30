@@ -239,6 +239,22 @@ function Calculator() {
     return [...inputArray, `${keyChar}${result}`];
   }
 
+  const handleBackspace = () => {
+    setCurrentInput((prevInput) => {
+      const lastElem = prevInput[prevInput.length - 1];
+
+      if (prevInput.length <= 1 && lastElem.length === 1) {
+        return ["0"];
+      }
+
+      if (lastElem.length === 1) {
+        return [...prevInput.slice(0, -1)];
+      }
+
+      return [...prevInput.slice(0, -1), lastElem.slice(0, -1)];
+    });
+  };
+
   return (
     <div className="cal-container">
       <div id="calculator">
@@ -250,6 +266,8 @@ function Calculator() {
             clearDisplay={handleClearDisplay}
             showHistory={showHistory}
             toggleHistory={handleToggleHistory}
+            backspace={handleBackspace}
+            isPrevResult={prevResult !== null}
           />
         </div>
         <div id="kb-left" className="kb-section">
