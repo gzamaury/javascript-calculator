@@ -94,6 +94,14 @@
   color: rgba(var(--bar-btn-color), 0.3);
 }
 
+.bar-btn-hidden {
+  display: none;
+}
+
+.bar-btn-visible {
+  display: initial;
+}
+
 @media only screen and (orientation: portrait) {
   .dsp-content {
     font-size: 7vh;

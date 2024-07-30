@@ -9,6 +9,8 @@ function Display({
   clearDisplay,
   showHistory,
   toggleHistory,
+  backspace,
+  isPrevResult,
 }) {
   const isHistoryEmpty = history.length === 0 || history[0].length < 1;
   const historyBtnClass = isHistoryEmpty
@@ -23,13 +25,23 @@ function Display({
     ? buildHistory(history)
     : buildOperation(currentInput);
 
+  const backspaceBtnText = "← BACK";
+  const backspaceBtnDisabled =
+    (isDisplayEmpty && !isPrevResult) || isPrevResult;
+  const backspaceBtnClassDisabled = backspaceBtnDisabled
+    ? " bar-btn-disabled"
+    : " bar-btn-enabled";
+  const backspaceBtnClassHidden = showHistory
+    ? " bar-btn-hidden"
+    : " bar-btn-visible";
+
   let clearBtnText = "CLR";
   let historyBtnText = "HISTORY";
-  let clerBtnDisabled = isDisplayEmpty;
+  let clearBtnDisabled = isDisplayEmpty;
   if (showHistory) {
     clearBtnText = "CLR HISTORY";
     historyBtnText = "CLOSE HISTORY";
-    clerBtnDisabled = isHistoryEmpty;
+    clearBtnDisabled = isHistoryEmpty;
   }
 
   return (
@@ -42,10 +54,19 @@ function Display({
         </div>
         <div id="dsp-bar-btn" className="dsp-bar-btn">
           <button
+            id="backspace"
+            className={`bar-btn-item${backspaceBtnClassHidden}${backspaceBtnClassDisabled}`}
+            type="button"
+            disabled={backspaceBtnDisabled}
+            onClick={backspace}
+          >
+            {backspaceBtnText}
+          </button>
+          <button
             id="clear"
             className={`bar-btn-item${clearBtnClassDisabled}`}
             type="button"
-            disabled={clerBtnDisabled}
+            disabled={clearBtnDisabled}
             onClick={clearDisplay}
           >
             {clearBtnText}
@@ -74,6 +95,8 @@ Display.propTypes = {
   clearDisplay: PropTypes.func.isRequired,
   showHistory: PropTypes.bool.isRequired,
   toggleHistory: PropTypes.func.isRequired,
+  backspace: PropTypes.func.isRequired,
+  isPrevResult: PropTypes.bool.isRequired,
 };
 
 export default Display;
