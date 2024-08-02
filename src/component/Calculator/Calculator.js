@@ -44,6 +44,7 @@ function Calculator() {
         ) {
           return [...prevHistory, currentInput];
         }
+
         return [...prevHistory];
       });
     }
@@ -122,7 +123,7 @@ function Calculator() {
     let inputArray = prevInput.slice();
 
     if (prevResult !== null) {
-      inputArray = [prevResult];
+      inputArray = [...prevResult];
       setPrevResult(null);
     }
 
@@ -191,6 +192,7 @@ function Calculator() {
 
   function handleEqualOperator(prevInput, keyChar) {
     let inputArray = prevInput.slice();
+    const firstElem = inputArray[0];
     let lastElem = inputArray[inputArray.length - 1];
     let beforeLastElem =
       inputArray.length > 1 ? inputArray[inputArray.length - 2] : "";
@@ -198,8 +200,8 @@ function Calculator() {
     // removes last and before last elems if last is .0 and before last is an operator
     if (
       removeTrailingZeros(lastElem) === "" &&
-      isAnOperator(beforeLastElem) &&
-      inputArray.length > 4
+      isSubtractOperator(beforeLastElem) &&
+      inputArray.length > (firstElem.startsWith("-") ? 5 : 4)
     ) {
       inputArray = inputArray.slice(0, -2);
       lastElem = inputArray[inputArray.length - 1];
@@ -209,16 +211,19 @@ function Calculator() {
 
     // removes last elem if is an operator
     if (
-      isAnOperator(lastElem) &&
+      isSubtractOperator(lastElem) &&
       isAnOperator(beforeLastElem) &&
-      inputArray.length > 3
+      inputArray.length > (firstElem.startsWith("-") ? 4 : 3)
     ) {
       inputArray = inputArray.slice(0, -2);
       lastElem = inputArray[inputArray.length - 1];
     }
 
     // removes last and before last elems if both are operators
-    if (isAnOperator(lastElem) && inputArray.length > 3) {
+    if (
+      isAnOperator(lastElem) &&
+      inputArray.length > (firstElem.startsWith("-") ? 4 : 3)
+    ) {
       inputArray = inputArray.slice(0, -1);
       lastElem = inputArray[inputArray.length - 1];
     }
@@ -238,7 +243,13 @@ function Calculator() {
     const result = removeLeadingZeros(
       String(calculateOperation(inputArray.join("")))
     );
-    setPrevResult(result);
+
+    // (?<=-) is a positive lookbehind that matches a position preceded by a minus sign.
+    // (?=\d|\.) is a positive lookahead that matches a position followed by a digit (\d)
+    //  or a decimal point (\.)
+    // split(/(?<=-)(?=\d)/) will split the string at the position where the minus sign and
+    //  the number meet, resulting in two separate strings.
+    setPrevResult(result.split(/(?<=-)(?=\d|\.)/));
 
     return [...inputArray, `${keyChar}${result}`];
   }
