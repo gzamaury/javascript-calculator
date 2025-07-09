@@ -1,5 +1,7 @@
 /* eslint-disable no-console */
-export function buildHistory(history) {
+import icons from "../Key/icons";
+
+export function buildHistory(history, onHistoryResultClick) {
   console.log("history:");
   console.log(history);
   const displayOutput = [];
@@ -28,7 +30,19 @@ export function buildHistory(history) {
     const lastElement = operation[operation.length - 1];
     const lastElemStartWithEq = starWithEq(lastElement);
     if (lastElemStartWithEq) {
-      displayOutput.push(<div className="result">{lastElement.slice(1)}</div>);
+      const result = lastElement.slice(1);
+      displayOutput.push(
+        <div className="result">
+          <button
+            className="add-history-btn"
+            type="button"
+            onClick={() => onHistoryResultClick(result)}
+          >
+            <img src={icons.reuse} alt="Reutilizar resultado en la operación" />
+          </button>
+          {result}
+        </div>
+      );
     }
 
     if (history.length > 1 && i < history.length - 1) {

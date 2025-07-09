@@ -57,6 +57,34 @@
   text-align: right;
   color: var(--dsp-result-color);
   line-height: 1;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  position: relative;
+  padding-right: 45px;
+}
+
+.add-history-btn {
+  background: rgba(0, 0, 0, 0.1);
+  border: none;
+  border-radius: 50%;
+  cursor: pointer;
+  padding: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  bottom: 4px;
+  right: 4px;
+}
+
+.add-history-btn:hover {
+  background: rgba(0, 0, 0, 0.2);
+}
+
+.add-history-btn img {
+  width: 28px;
+  height: 28px;
 }
 
 .separator {

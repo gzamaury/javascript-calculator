@@ -15,5 +15,6 @@ const icons = {
   multiply: "./imgs/multiply.svg",
   divide: "./imgs/divide.svg",
   equals: "./imgs/equals.svg",
+  reuse: "./imgs/reuse-icon.svg",
 };
 export default icons;

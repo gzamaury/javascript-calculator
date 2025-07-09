@@ -11,6 +11,7 @@ function Display({
   toggleHistory,
   backspace,
   isPrevResult,
+  onHistoryResultClick,
 }) {
   const isHistoryEmpty = history.length === 0 || history[0].length < 1;
   const historyBtnClass = isHistoryEmpty
@@ -22,7 +23,7 @@ function Display({
       ? " bar-btn-disabled"
       : " bar-btn-enabled";
   const displayOutput = showHistory
-    ? buildHistory(history)
+    ? buildHistory(history, onHistoryResultClick)
     : buildOperation(currentInput);
 
   const backspaceBtnText = "← BACK";
@@ -97,6 +98,7 @@ Display.propTypes = {
   toggleHistory: PropTypes.func.isRequired,
   backspace: PropTypes.func.isRequired,
   isPrevResult: PropTypes.bool.isRequired,
+  onHistoryResultClick: PropTypes.func.isRequired,
 };
 
 export default Display;
