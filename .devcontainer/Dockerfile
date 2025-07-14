@@ -12,7 +12,7 @@ FROM mcr.microsoft.com/devcontainers/javascript-node:1-${VARIANT}
 
 # [Optional] Uncomment if you want to install more global node modules
 # RUN su node -c "npm install -g <your-package-list-here>"
-RUN su node -c "npm install -g serve"
+RUN su node -c "npm install -g http-server"
 
 # Persist bash history for a non-root user
 # https://code.visualstudio.com/remote/advancedcontainers/persist-bash-history
