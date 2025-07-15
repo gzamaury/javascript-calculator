@@ -67,6 +67,38 @@ function Calculator() {
     setShowHistory((prevShowHistory) => !prevShowHistory);
   };
 
+  const handleHistoryResult = (result) => {
+    triggerVibration();
+    setShowHistory(false); // Always close history
+
+    setCurrentInput((prevInput) => {
+      // Case 1: A previous result is being shown. Start a new calculation.
+      if (prevResult !== null) {
+        setPrevResult(null);
+        return [result];
+      }
+
+      const lastElem = prevInput[prevInput.length - 1];
+
+      // Case 2: Input is '0'. Replace it with the result.
+      if (prevInput.length === 1 && lastElem === "0") {
+        return [result];
+      }
+
+      // Case 3: Last input is an operator. Append the result.
+      if (isAnOperator(lastElem)) {
+        // If the last operator is '-' and the result is negative, wrap in parentheses.
+        if (isSubtractOperator(lastElem) && result.startsWith("-")) {
+          return [...prevInput, `(${result})`];
+        }
+        return [...prevInput, result];
+      }
+
+      // Case 4: Last input is a number. Do nothing, as requested.
+      return prevInput;
+    });
+  };
+
   function handleInput(prevInput, keyChar) {
     if (isANumberOrPoint(keyChar)) {
       return handleNumberOrPoint(prevInput, keyChar);
@@ -284,6 +316,7 @@ function Calculator() {
             toggleHistory={handleToggleHistory}
             backspace={handleBackspace}
             isPrevResult={prevResult !== null}
+            onHistoryResultClick={handleHistoryResult}
           />
         </div>
         <div id="kb-left" className="kb-section">
